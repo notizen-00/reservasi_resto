@@ -429,6 +429,15 @@
                                         showConfirmButton: false,
                                         timer: 1500
                                     });
+                                },
+                                error: function(response) {
+                                    Swal.fire({
+                                        position: "center",
+                                        icon: "error",
+                                        text: "Silahkan Login Terlebih Dahulu",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
                                 }
                             })
 
