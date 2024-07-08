@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use App\Enums\StatusTransaksi;
 
 class TransaksiResource extends Resource
 {
@@ -28,7 +29,22 @@ class TransaksiResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('nomor_transaksi'),
+                Tables\Columns\TextColumn::make('meja.nomor_meja')
+                ->icon('heroicon-o-tv')
+                ->color('primary'),
+                Tables\Columns\TextColumn::make('tanggal_reservasi'),
+                Tables\Columns\TextColumn::make('jam_reservasi'),
+                Tables\Columns\TextColumn::make('status_transaksi')
+                    // ->enum([
+                    //     StatusTransaksi::Pending->value => StatusTransaksi::Pending->label(),
+                    //     StatusTransaksi::Verified->value => StatusTransaksi::Verified->label(),
+                    //     StatusTransaksi::Proses->value => StatusTransaksi::Proses->label(),
+                    //     StatusTransaksi::Selesai->value => StatusTransaksi::Selesai->label(),
+                    // ])
+                    ->badge(),
+                Tables\Columns\TextColumn::make('total')
+                    ->money('IDR', locale: 'id'),
             ])
             ->filters([
                 //

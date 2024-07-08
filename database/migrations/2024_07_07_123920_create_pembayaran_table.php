@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('jumlah_pembayaran');
             $table->string('metode_pembayaran');
             $table->boolean('status_pembayaran');
+            $table->string('foto_bukti')->nullable();
             $table->timestamps();
         });
     }

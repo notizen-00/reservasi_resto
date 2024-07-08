@@ -27,7 +27,12 @@ class PelangganResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('nama_customer'),
+                Tables\Columns\TextColumn::make('no_hp'),
+                Tables\Columns\TextColumn::make('alamat'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Tanggal Registrasi'),
+
             ])
             ->filters([
                 //

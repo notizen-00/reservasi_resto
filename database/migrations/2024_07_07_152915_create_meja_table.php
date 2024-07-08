@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nomor_meja');
             $table->integer('kapasitas');
             $table->boolean('status_meja');
+            $table->string('foto_meja')->nullable();
             $table->timestamps();
         });
     }

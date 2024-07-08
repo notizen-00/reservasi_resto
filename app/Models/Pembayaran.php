@@ -17,5 +17,11 @@ class Pembayaran extends Model
         'jumlah_pembayaran',
         'metode_pembayaran',
         'status_pembayaran',
+        'foto_bukti',
     ];
+
+    public function transaksi()
+    {
+        return $this->hasOne(Transaksi::class);
+    }
 }

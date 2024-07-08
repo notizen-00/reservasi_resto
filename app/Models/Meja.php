@@ -16,5 +16,11 @@ class Meja extends Model
         'nomor_meja',
         'kapasitas',
         'status_meja',
+        'foto_meja',
     ];
+
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class);
+    }
 }

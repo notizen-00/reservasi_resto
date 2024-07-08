@@ -14,13 +14,14 @@ return new class extends Migration
 
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pelanggan_id')->constrained('pelanggan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('pelanggan_id')->constrained('user')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('meja_id')->constrained('meja')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('pembayaran_id')->constrained('pembayaran')->onDelete('cascade')->onUpdate('cascade');
             $table->string('nomor_transaksi');
             $table->boolean('status_transaksi');
             $table->integer('total');
             $table->integer('kembalian');
+            $table->string('keterangan')->nullable();
             $table->dateTime('tanggal_reservasi');
             $table->timestamps();
         });

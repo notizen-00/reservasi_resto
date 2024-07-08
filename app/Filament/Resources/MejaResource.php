@@ -29,6 +29,17 @@ class MejaResource extends Resource
                     ->numeric()
                     ->suffix('Orang'),
                 Forms\Components\Toggle::make('status_meja'),
+                Forms\Components\FileUpload::make('foto_meja')
+                    ->label('Foto Meja (optional)')
+                    ->directory('foto_meja')
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])
+                    ->imagePreviewHeight('5')
+                    ->loadingIndicatorPosition('left')
+                    ->panelAspectRatio('4:1')
+                    ->panelLayout('integrated')
+                    ->removeUploadedFileButtonPosition('right')
+                    ->uploadButtonPosition('left')
+                    ->uploadProgressIndicatorPosition('left'),
 
             ]);
     }
