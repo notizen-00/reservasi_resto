@@ -19,4 +19,9 @@ class Produk extends Model
         'status_produk',
         'foto_produk',
     ];
+
+    public function detail_transaksi()
+    {
+        return $this->hasMany(DetailTransaksi::class);
+    }
 }

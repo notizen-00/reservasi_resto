@@ -27,6 +27,11 @@ class Transaksi extends Model
         'jam_reservasi',
     ];
 
+    public function detail_transaksi()
+    {
+        return $this->hasMany(DetailTransaksi::class);
+    }
+
     public function meja()
     {
         return $this->belongsTo(Meja::class);

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PelangganAuthController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,8 @@ Route::post('pelanggan/register', [PelangganAuthController::class, 'register'])-
 Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+    Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.show');
+    Route::post('/pembayaran/update', [PembayaranController::class, 'update'])->name('pembayaran.update');
     Route::post('/cart/store', [CartController::class, 'store'])->name('cart.store');
     Route::post('/cart/simpan', [CartController::class, 'simpan'])->name('cart.simpan');
     Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');

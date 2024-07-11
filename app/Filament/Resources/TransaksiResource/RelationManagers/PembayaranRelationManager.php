@@ -19,11 +19,20 @@ class PembayaranRelationManager extends RelationManager
     {
         return $form
             ->schema([
+                
                 Forms\Components\Select::make('status_pembayaran')
                     ->options([
                     '0' => 'Belum Lunas',
                     '1' => 'Lunas',
-                    ]),
+                    ])
+                    ->columnSpan(12),
+                Forms\Components\FileUpload::make('foto_bukti')
+                    ->directory('foto_bukti')
+                    ->label('Foto Bukti')
+                    ->columnSpan(12)
+                    ->panelAspectRatio('1:1')
+                        ->imagePreviewHeight('250')
+                    ->required(),
                     
             ]);
     }
@@ -34,6 +43,8 @@ class PembayaranRelationManager extends RelationManager
             ->recordTitleAttribute('nomor_pembayaran')
             ->columns([
                 Tables\Columns\TextColumn::make('nomor_pembayaran'),
+                Tables\Columns\ImageColumn::make('foto_bukti')
+                ,
                 Tables\Columns\TextColumn::make('jumlah_pembayaran')
                 ->money('IDR', locale: 'id'),
                 Tables\Columns\TextColumn::make('metode_pembayaran'),
@@ -49,6 +60,7 @@ class PembayaranRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

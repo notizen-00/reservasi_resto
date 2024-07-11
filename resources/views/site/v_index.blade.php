@@ -196,8 +196,20 @@
                                             class="text-primary">{{ Illuminate\Support\Number::currency($i->harga_produk,"IDR","id"); }}</span>
                                     </h5>
                                     <span class="badge bg-info">{{ $i->kategori_produk }}</span>
-                                    <small class="fst-italic">Ipsum ipsum clita erat amet dolor justo
-                                        diam</small>
+                                    <div class="d-flex justify-content-between border-bottom pb-2 mt-10 pt-4">
+                                        <button class="btn btn-sm btn-outline-primary px-3 cart-add"
+                                            data-id="{{ $i->id }}"><i class="fas fa-cart-plus"></i> Tambah
+                                            Keranjang</button>
+                                        @if($i->status_produk == true)
+                                        <span class="btn btn-sm btn-outline-success"><i class="fas fa-check"> Produk
+                                                Tersedia</i>
+                                        </span>
+                                        @else
+                                        <span class="btn btn-sm btn-outline-danger"><i class="fas fa-error">Produk
+                                                Kosong</i>
+                                        </span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -219,8 +231,20 @@
                                             class="text-primary">{{ Illuminate\Support\Number::currency($i->harga_produk,"IDR","id"); }}</span>
                                     </h5>
                                     <span class="badge bg-info">{{ $i->kategori_produk }}</span>
-                                    <small class="fst-italic">Ipsum ipsum clita erat amet dolor justo
-                                        diam</small>
+                                    <div class="d-flex justify-content-between border-bottom pb-2 mt-10 pt-4">
+                                        <button class="btn btn-sm btn-outline-primary px-3 cart-add"
+                                            data-id="{{ $i->id }}"><i class="fas fa-cart-plus"></i> Tambah
+                                            Keranjang</button>
+                                        @if($i->status_produk == true)
+                                        <span class="btn btn-sm btn-outline-success"><i class="fas fa-check"> Produk
+                                                Tersedia</i>
+                                        </span>
+                                        @else
+                                        <span class="btn btn-sm btn-outline-danger"><i class="fas fa-error">Produk
+                                                Kosong</i>
+                                        </span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>

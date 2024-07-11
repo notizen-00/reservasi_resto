@@ -18,4 +18,14 @@ class DetailTransaksi extends Pivot
         'jumlah',
         'subtotal',
     ];
+
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaksi::class);
+    }
+
+    public function produk()
+    {
+        return $this->belongsTo(Produk::class);
+    }
 }

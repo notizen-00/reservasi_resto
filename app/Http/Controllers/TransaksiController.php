@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailTransaksi;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,9 @@ class TransaksiController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $detail_transaksi = DetailTransaksi::with('produk')->where('transaksi_id', $id)->get();
+
+        return response()->json($detail_transaksi);
     }
 
     /**
