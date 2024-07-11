@@ -20,6 +20,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/simpan', [CartController::class, 'simpan'])->name('cart.simpan');
     Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{rowId}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::post('/api/meja', [CartController::class, 'meja'])->name('api.meja');
     // Tambahkan rute lain yang memerlukan autentikasi di sini
 });
 

@@ -45,6 +45,50 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.2/dist/sweetalert2.min.css
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('asset/css/style.css') }}" rel="stylesheet">
+    <style type="text/css">
+    .meja-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 15px;
+        cursor: pointer;
+        background-color: #f8f9fa;
+
+        /* Light gray background */
+        max-height: 200px;
+        min-height: 200px;
+        transition: background-color 0.3s;
+    }
+
+    .meja-box p {
+        margin: 0 0 10px;
+        font-weight: bold;
+    }
+
+    .d-flex.flex-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .inner-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25%;
+        /* Adjust width as needed to fit 4 boxes in a row */
+        height: 40px;
+        /* Adjust height as needed */
+        background-color: #6c757d;
+        /* Gray background */
+        margin: 2px;
+    }
+    </style>
 </head>
 
 <body>

@@ -36,4 +36,9 @@ class Transaksi extends Model
     {
         return $this->belongsTo(Pembayaran::class);
     }
+
+    public function history_transaksi()
+    {
+        return $this->hasMany(HistoryTransaksi::class);
+    }
 }

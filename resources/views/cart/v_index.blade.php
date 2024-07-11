@@ -23,22 +23,19 @@
             </div>
         </div>
         <div class="card-group">
-            @foreach($meja as $i)
-            <div class="card">
-                <img src="{{ asset('storage/'.$i->foto_meja) }}" style="height: 250px; width: 100%;  object-fit:cover;"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{ $i->nomor_meja }}</h5>
-                    <p class="card-text"><span class="badge bg-info"><i class="fas fa-table-picnic"></i>
-                            {{ $i->kapasitas }} Orang</span></p>
+            <div class="card text-center">
+                <div class="card-header">
+                    Pilih Meja
                 </div>
-                <div class="card-footer d-flex justify-content-center">
-                    <small class="text-muted"><button class="btn btn-outline-primary pilih_meja"
-                            data-id="{{ $i->id }}">Pilih
-                            Meja</button></small>
+                <div class="card-body">
+                    <div id="meja_choosen">
+                        <a href="#" class="btn btn-primary pilih_meja">Pilih Meja</a>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    Silahkan isi data tanggal dan reservasi untuk memilih meja
                 </div>
             </div>
-            @endforeach
         </div>
 
 
@@ -169,6 +166,32 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade " id="pilihMeja" tabindex="-1" aria-labelledby="editQtyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <form id="updateQtyForm">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editQtyModalLabel">Pilih Meja</h5><br>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <br>
+                    <div class="container"><span class="ml-4 pl-4">Data Reservasi untuk tanggal : <span
+                                id="tanggal_view"></span> & Jam :
+                            <span id="jam_view"></span></span></div>
+                    <div class="modal-body">
+                        <div id="mejaGrid" class="row"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Pilih Meja</button> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     @endsection
     @push('scripts')
     <script>
@@ -187,41 +210,116 @@
 
             $('[name=tanggal_reservasi]').val(tgl);
         });
-        $('.pilih_meja').on('click', function(e) {
-            e.preventDefault();
-            var id = $(this).attr('data-id');
 
-            // Cek apakah meja sudah dipilih
-            if ($(this).attr('data-selected') === "true") {
+        $('#meja_choosen .pilih_meja').on('click', function(e) {
+            e.preventDefault();
+            var jam = $('[name=jam]').val();
+            var tanggal = $('[name=tanggal]').val();
+
+            if (jam == '' && tanggal == '') {
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Meja ini sudah dipilih sebelumnya!',
+                    position: "center",
+                    icon: "warning",
+                    text: "Pilih tanggal & jam reservasi terlebih dahulu",
+                    showConfirmButton: false,
+                    timer: 3000
                 });
-                return;
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('api.meja') }}",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        jam: jam,
+                        tanggal: tanggal
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        $('#pilihMeja').modal('show');
+                        $("#tanggal_view").text(tanggal);
+                        $("#jam_view").text(jam);
+                        $('#mejaGrid').empty();
+
+                        // Generate new grid based on capacity
+                        response.forEach(function(meja) {
+                            var capacityDivs = '';
+                            for (var i = 0; i < meja.kapasitas; i++) {
+                                capacityDivs += '<div class="inner-box"></div>';
+                            }
+
+                            var mejaDiv = $('<div>', {
+                                class: 'col-md-2 mb-3', // Adjust the column size as needed
+                                html: '<div class="meja-box ' + (meja
+                                        .status === 'reserved' ?
+                                        'bg-danger' : '') + '" data-id="' +
+                                    meja.id + '" data-name="' + meja
+                                    .nomor_meja + '" data-status="' + meja
+                                    .status + '">' +
+                                    '<p class="mb-2">' + meja.nomor_meja +
+                                    '</p>' +
+                                    '<div class="d-flex justify-content-center flex-wrap mb-2">' +
+                                    capacityDivs + '</div>' +
+                                    '<div><span class="' + (meja.status ===
+                                        'reserved' ?
+                                        'badge bg-warning text-muted' :
+                                        'badge bg-success text-white') +
+                                    '">' +
+                                    meja.status + '</span></div>' +
+                                    '</div>'
+                            });
+                            $('#mejaGrid').append(mejaDiv);
+                        });
+
+
+                        Swal.fire({
+                            position: "bottom-end",
+                            icon: "success",
+                            text: "Meja berhasil di load",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                })
+
             }
 
-            // Reset status selected pada semua tombol meja
-            $('.pilih_meja').each(function() {
-                $(this).removeAttr('data-selected').html('Pilih Meja');
-            });
 
-            // Tandai meja yang dipilih
-            $(this).attr('data-selected', 'true').html(
-                '<i class="fa-duotone fa-check text-success"></i> Dipilih');
 
-            // Set nilai input meja_id
+        });
+
+        $('#mejaGrid').on('click', '.meja-box', function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            var name = $(this).attr('data-name');
+            var status = $(this).attr('data-status');
             $('[name=meja_id]').val(id);
 
-            // Tampilkan notifikasi bahwa meja berhasil dipilih
-            Swal.fire({
-                position: "bottom-end",
-                icon: "success",
-                text: "Meja " + id + " berhasil dipilih",
-                showConfirmButton: false,
-                timer: 1500
-            });
+            if (status === 'reserved') {
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    text: "Meja ini telah di pesan!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                $('#pilihMeja').modal('hide');
+
+                $("#meja_choosen").html("Meja Terpilih : " + name +
+                    "<br><a href='{{ url('/cart') }}' class='btn btn-primary pilih_meja'>Pilih Ulang Meja</a>"
+                );
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    text: "Meja berhasil di pilih",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+
         });
+
+
 
         $('.cart-update').on('click', function(e) {
             e.preventDefault();

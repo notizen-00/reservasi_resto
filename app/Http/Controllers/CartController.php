@@ -27,6 +27,30 @@ class CartController extends Controller
         return view('cart.v_index', $data);
     }
 
+    public function meja(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $jam = $request->jam;
+
+        // Mengambil semua meja dengan transaksi pada tanggal dan jam tertentu
+        $meja = Meja::with(['transaksi' => function ($query) use ($tanggal, $jam) {
+            $query->where('tanggal_reservasi', $tanggal);
+        }])->get();
+
+        // Memetakan hasil untuk menambahkan status
+        $meja = $meja->map(function ($meja) {
+            $status = $meja->transaksi->isEmpty() ? 'available' : 'reserved';
+            return [
+                'id' => $meja->id,
+                'nomor_meja' => $meja->nomor_meja,
+                'kapasitas' => $meja->kapasitas,
+                'status' => $status,
+            ];
+        });
+
+        return response()->json($meja);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
